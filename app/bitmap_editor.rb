@@ -5,45 +5,53 @@ class BitmapEditor
   MAX_ROWS = 250
   MAX_COLS = 250
 
-  def run
+  def initialize
     @bm = nil
     @running = true
+  end
+
+  def run
     puts 'type ? for help'
     while @running
       print '> '
       input = gets.chomp
       cmd, args = parse_cmd(input)
 
-      if !is_valid_cmd?(cmd, args)
-        print "Command ", cmd, " is not valid\n"
-      else
-        if (cmd == 'C' ||
-            cmd == 'L' ||
-            cmd == 'V' ||
-            cmd == 'H' ||
-            cmd == 'S') &&
-            !@bm
+      run_cmd(cmd, args)
+    end
+  end
 
-            puts 'Bitmap not initialized'
-        elsif cmd == 'I'
-          @bm = Bitmap.new(args[0].to_i, args[1].to_i)
-        elsif cmd == 'C'
-          @bm.clear
-        elsif cmd == 'L'
-          @bm.draw_px(args[0].to_i, args[1].to_i, args[2])
-        elsif cmd == 'V'
-          @bm.draw_v(args[0].to_i, args[1].to_i, args[2].to_i, args[3])
-        elsif cmd == 'H'
-          @bm.draw_h(args[0].to_i, args[1].to_i, args[2].to_i, args[3])
-        elsif cmd == 'S'
-          @bm.show
-        elsif cmd == '?'
-          show_help
-        elsif cmd == 'X'
-          exit_console
-        else
-          puts 'unrecognised command :('
-        end
+  ## Runs a command with the given arguments
+  def run_cmd(cmd, args)
+    if !is_valid_cmd?(cmd, args)
+      print "Command ", cmd, " is not valid\n"
+    else
+      if (cmd == 'C' ||
+          cmd == 'L' ||
+          cmd == 'V' ||
+          cmd == 'H' ||
+          cmd == 'S') &&
+          !@bm
+
+          puts 'Bitmap not initialized'
+      elsif cmd == 'I'
+        @bm = Bitmap.new(args[0].to_i, args[1].to_i)
+      elsif cmd == 'C'
+        @bm.clear
+      elsif cmd == 'L'
+        @bm.draw_px(args[0].to_i, args[1].to_i, args[2])
+      elsif cmd == 'V'
+        @bm.draw_v(args[0].to_i, args[1].to_i, args[2].to_i, args[3])
+      elsif cmd == 'H'
+        @bm.draw_h(args[0].to_i, args[1].to_i, args[2].to_i, args[3])
+      elsif cmd == 'S'
+        @bm.show
+      elsif cmd == '?'
+        show_help
+      elsif cmd == 'X'
+        exit_console
+      else
+        puts 'unrecognised command :('
       end
     end
   end
