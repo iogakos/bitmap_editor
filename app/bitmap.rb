@@ -30,7 +30,7 @@ class Bitmap
 
   ## Draw a horizontal segment with the given colour
   def draw_h(x1, x2, y, colour)
-    @bm[y - 1][x1 - 1..x2 - x1] = Array.new(x2 - x1 + 1, colour)
+    @bm[y - 1][x1 - 1..x2 - 1] = Array.new(x2 - x1 + 1, colour)
   end
 
   ## Print the bitmap 
