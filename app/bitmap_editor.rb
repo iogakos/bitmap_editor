@@ -1,6 +1,9 @@
+require './app/bitmap'
+
 class BitmapEditor
 
   def run
+    @bm = nil
     @running = true
     puts 'type ? for help'
     while @running
@@ -8,13 +11,32 @@ class BitmapEditor
       input = gets.chomp
       cmd, args = parse_cmd(input)
 
-      case input
-        when '?'
-          show_help
-        when 'X'
-          exit_console
-        else
-          puts 'unrecognised command :('
+      if (cmd == 'C' ||
+          cmd == 'L' ||
+          cmd == 'V' ||
+          cmd == 'H' ||
+          cmd == 'S') &&
+          !@bm
+
+          puts 'Bitmap not initialized'
+      elsif cmd == 'I'
+        @bm = Bitmap.new(args[0].to_i, args[1].to_i)
+      elsif cmd == 'C'
+        @bm.clear
+      elsif cmd == 'L'
+        @bm.draw_px(args[0].to_i, args[1].to_i, args[2])
+      elsif cmd == 'V'
+        @bm.draw_v(args[0].to_i, args[1].to_i, args[2].to_i, args[3])
+      elsif cmd == 'H'
+        @bm.draw_h(args[0].to_i, args[1].to_i, args[2].to_i, args[3])
+      elsif cmd == 'S'
+        @bm.show
+      elsif cmd == '?'
+        show_help
+      elsif cmd == 'X'
+        exit_console
+      else
+        puts 'unrecognised command :('
       end
     end
   end
