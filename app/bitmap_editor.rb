@@ -6,6 +6,8 @@ class BitmapEditor
     while @running
       print '> '
       input = gets.chomp
+      cmd, args = parse_cmd(input)
+
       case input
         when '?'
           show_help
@@ -18,6 +20,16 @@ class BitmapEditor
   end
 
   private
+
+    ## Parse command
+    def parse_cmd(input)
+      input = input.split
+      cmd = input[0]
+      args = input[1..-1]
+
+      return cmd, args
+    end
+
     def exit_console
       puts 'goodbye!'
       @running = false
