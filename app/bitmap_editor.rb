@@ -46,7 +46,7 @@ class BitmapEditor
     done = true
 
     if !is_valid_cmd?(cmd, args)
-      puts "Command ", cmd, " is not valid"
+      print "Command ", cmd, " is not valid\n"
       done = false
     else
       if (cmd == 'C' ||
