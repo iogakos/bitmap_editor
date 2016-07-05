@@ -5,6 +5,8 @@ class BitmapEditor
   MAX_ROWS = 250
   MAX_COLS = 250
 
+  attr_reader :bm
+
   def initialize
     @bm = nil
     @running = true
@@ -22,9 +24,12 @@ class BitmapEditor
   end
 
   ## Runs a command with the given arguments
-  def run_cmd(cmd, args)
+  def run_cmd(cmd, args = [])
+    done = true
+
     if !is_valid_cmd?(cmd, args)
-      print "Command ", cmd, " is not valid\n"
+      puts "Command ", cmd, " is not valid"
+      done = false
     else
       if (cmd == 'C' ||
           cmd == 'L' ||
@@ -34,6 +39,7 @@ class BitmapEditor
           !@bm
 
           puts 'Bitmap not initialized'
+          done = false
       elsif cmd == 'I'
         @bm = Bitmap.new(args[0].to_i, args[1].to_i)
       elsif cmd == 'C'
@@ -52,8 +58,11 @@ class BitmapEditor
         exit_console
       else
         puts 'unrecognised command :('
+        done = false
       end
     end
+
+    return done
   end
 
   private
@@ -68,7 +77,8 @@ class BitmapEditor
     end
 
     ## Validate commands and its arguments
-    def is_valid_cmd?(cmd, args)
+    def is_valid_cmd?(cmd, args = [])
+      valid = false
 
       if cmd == 'I'
         if args.length == 2 &&
@@ -77,20 +87,17 @@ class BitmapEditor
           (rows = args[0].to_i) >= 1 && rows <= MAX_ROWS &&
           (cols = args[0].to_i) >= 1 && cols <= MAX_COLS
 
-          return true
-        else
-          return false
+          valid = true
         end
       elsif cmd == 'L'
         if args.length == 3 &&
           args[0] =~ /^\d+$/ &&
           args[1] =~ /^\d+$/ &&
           (col = args[0].to_i) > 0 && col <= @bm.cols &&
-          (row = args[1].to_i) > 0 && row <= @bm.rows
+          (row = args[1].to_i) > 0 && row <= @bm.rows &&
+          args[2] =~ /^[A-Z]{1}$/
 
-          return true
-        else
-          return false
+          valid = true
         end
       elsif cmd == 'V'
         if args.length == 4 &&
@@ -100,11 +107,9 @@ class BitmapEditor
           (col = args[0].to_i) > 0 && col <= @bm.cols &&
           (row = args[1].to_i) > 0 && row <= @bm.rows &&
           (row = args[2].to_i) > 0 && row <= @bm.rows &&
-          args[3] =~ /^\S{1}$/
+          args[3] =~ /^[A-Z]{1}$/
 
-          return true
-        else
-          return false
+          valid = true
         end
       elsif cmd == 'H'
         if args.length == 4 &&
@@ -114,21 +119,19 @@ class BitmapEditor
           (col = args[0].to_i) > 0 && col <= @bm.cols &&
           (col = args[1].to_i) > 0 && col <= @bm.cols &&
           (row = args[2].to_i) > 0 && row <= @bm.rows &&
-          args[3] =~ /^\S{1}$/
+          args[3] =~ /^[A-Z]{1}$/
 
-          return true
-        else
-          return false
+          valid = true
         end
       elsif cmd == '?' || cmd == 'C' || cmd == 'S' || cmd == 'X'
         if args.empty?
-          return true
-        else
-          return false
+          valid = true
         end
       else
-        return true
+        valid = true
       end
+
+      return valid
     end
 
     def exit_console
