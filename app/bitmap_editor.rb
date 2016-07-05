@@ -125,9 +125,9 @@ class BitmapEditor
     if cmd == 'I'
       if args.length == 2 &&
         args[0] =~ /^\d+$/ &&
-        args[1] =~ /^\d+$/
+        args[1] =~ /^\d+$/ &&
         (rows = args[0].to_i) >= 1 && rows <= MAX_ROWS &&
-        (cols = args[0].to_i) >= 1 && cols <= MAX_COLS
+        (cols = args[1].to_i) >= 1 && cols <= MAX_COLS
 
         valid = true
       end

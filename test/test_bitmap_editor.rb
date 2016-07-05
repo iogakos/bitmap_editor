@@ -80,6 +80,10 @@ class TestBitmapEditor < Test::Unit::TestCase
     assert_true(@be.send(:is_valid_cmd?, "I", ["2", "5"]))
   end
 
+  def test_command_create_fails_with_invalid_dimensions
+    assert_false(@be.send(:is_valid_cmd?, "I", ["2", "50000"]))
+  end
+
   def test_command_create_with_letter_as_pixel_is_invalid
     assert_false(@be.send(:is_valid_cmd?, "I", ["2", "a5"]))
   end
